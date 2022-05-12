@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Highlight } from 'react-instantsearch-dom';
 import Stars from './Stars';
 import PaymentOptions from './PaymentOptions';
-import Modal from './Modal';
+import { AppContext } from '../context';
 
-const Hit = hit => {
+const Hit = (hit) => {
   const {
     image_url,
     rounded_stars_count,
     dining_style,
     payment_options,
   } = hit.hit;
-  const [editIsOpen, setEditIsOpen] = useState(false);
+  const { dispatch } = useContext(AppContext);
 
-  const toggleEditModal = () => {
-    setEditIsOpen(!editIsOpen);
-    const classAction = editIsOpen ? 'remove' : 'add';
-    document.body.classList[classAction]('modal-open');
+  const openEditModal = () => {
+    dispatch({ type: 'OPEN_EDIT_MODAL', payload: hit });
+  };
+  const openDeleteConfirmationModal = () => {
+    dispatch({ type: 'OPEN_DELETE_MODAL', payload: hit });
   };
 
   return (
@@ -37,17 +38,16 @@ const Hit = hit => {
       </div>
       <div className="media-right">
         <div>
-          <button type="button" className="btn btn-default btn-xs" data-toggle="modal" onClick={toggleEditModal}>
+          <button type="button" className="btn btn-default btn-xs" data-toggle="modal" onClick={openEditModal}>
             <span className="glyphicon glyphicon-pencil" aria-hidden="true" />
           </button>
         </div>
         <div>
-          <button type="button" className="btn btn-default btn-xs">
+          <button type="button" className="btn btn-default btn-xs" onClick={openDeleteConfirmationModal}>
             <span className="glyphicon glyphicon-remove" aria-hidden="true" />
           </button>
         </div>
       </div>
-      <Modal open={editIsOpen} />
     </div>
   );
 };

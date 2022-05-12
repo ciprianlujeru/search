@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Modal = ({ open }) => {
-  console.log('====open', open);
+const Modal = ({ open, onClose, onAccept, children, title, saveText }) => {
+  const [isOpen, setIsOpen] = useState(open);
+
+  useEffect(() => {
+    if (open !== isOpen) {
+      setIsOpen(open);
+    }
+  }, [open]);
+
+  const closeModal = () => {
+    if (typeof onClose === 'function') {
+      onClose();
+    }
+    setIsOpen(false);
+  };
+
+  const accept = () => {
+    if (typeof onAccept === 'function') {
+      onAccept();
+    }
+  };
+
   return (
     <>
       <div
         id="exampleModalLive"
-        className={`modal ${open ? 'show' : 'fade'}`}
+        className={`modal ${isOpen ? 'show' : 'fade'}`}
         tabIndex="-1"
         role="dialog"
         aria-labelledby="exampleModalLiveLabel"
@@ -14,22 +34,22 @@ const Modal = ({ open }) => {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLiveLabel">Modal title</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <h5 className="modal-title" id="exampleModalLiveLabel">{title}</h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
                 <span aria-hidden="true">×</span>
               </button>
             </div>
             <div className="modal-body">
-              <p>Woohoo, you're reading this text in a modal!</p>
+              {children}
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary">Save changes</button>
+              <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>Close</button>
+              <button type="button" className="btn btn-primary" onClick={accept}>{saveText || 'Save'}</button>
             </div>
           </div>
         </div>
       </div>
-      <div className={`modal-backdrop ${open ? 'show' : 'hide'}`} />
+      <div className={`modal-backdrop ${isOpen ? 'show' : 'hide'}`} />
     </>
   );
 };
