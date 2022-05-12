@@ -124,7 +124,7 @@ section aside .badge {
   top: 1px;
 }
 
-#genres .item {
+#dining-styles .item {
   display: block;
   cursor: pointer;
   padding: 4px 4px 4px 8px;
@@ -133,18 +133,18 @@ section aside .badge {
   margin: 0 0 -1px;
 }
 
-#genres .item:hover {
+#dining-styles .item:hover {
   background: #333333;
   color: #ffffff;
   text-decoration: none;
 }
 
-#genres .active .item {
+#dining-styles .active .item {
   border: 1px solid #ce1312;
   margin-top: -1px;
 }
 
-#genres .active .badge {
+#dining-styles .active .badge {
   background: #333333;
 }
 
@@ -289,20 +289,20 @@ section article {
   color: #fbae00;
 }
 
-.genre,
-.year {
+.payment-option,
+.dining-style {
   margin: 12px 0;
 }
 
-.genre .badge + .badge {
+.payment-option .badge + .badge {
   margin-left: 4px;
 }
 
-.year {
+.dining-style {
   font-weight: bold;
 }
 
-.genre .badge {
+.payment-option .badge {
   background: #bbbbbb;
 }
 
