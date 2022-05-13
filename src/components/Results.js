@@ -19,7 +19,12 @@ const Results = connectSearchBox(() => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-xs-1">
-            <button type="button" className="btn btn-default btn-xs" data-toggle="modal" onClick={openAddModal}>
+            <button
+              type="button"
+              className="btn btn-default btn-xs"
+              data-toggle="modal"
+              onClick={openAddModal}
+            >
               <span className="glyphicon glyphicon-plus" aria-hidden="true" />
             </button>
           </div>

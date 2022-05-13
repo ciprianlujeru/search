@@ -1,7 +1,14 @@
 import React, { useReducer } from 'react';
+import algoliasearch from 'algoliasearch';
 import { AppContext } from './context';
 
+const searchClient = algoliasearch(
+  'TEX0W26GEO',
+  '29f4470676447569a28b8494bfed9f50'
+);
+
 const initialState = {
+  searchClient,
   editModalData: undefined,
   deleteModalData: undefined,
 };

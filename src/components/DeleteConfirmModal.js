@@ -13,9 +13,7 @@ const DeleteConfirmModal = () => {
 
   return (
     <Modal open={isOpen} title={name} saveText="Delete" onClose={closeModal}>
-      <div>
-        aaaaaaa
-      </div>
+      <div>aaaaaaa</div>
     </Modal>
   );
 };

@@ -4,7 +4,7 @@ import Stars from './Stars';
 import PaymentOptions from './PaymentOptions';
 import { AppContext } from '../context';
 
-const Hit = (hit) => {
+const Hit = hit => {
   const {
     image_url,
     rounded_stars_count,
@@ -38,12 +38,21 @@ const Hit = (hit) => {
       </div>
       <div className="media-right">
         <div>
-          <button type="button" className="btn btn-default btn-xs" data-toggle="modal" onClick={openEditModal}>
+          <button
+            type="button"
+            className="btn btn-default btn-xs"
+            data-toggle="modal"
+            onClick={openEditModal}
+          >
             <span className="glyphicon glyphicon-pencil" aria-hidden="true" />
           </button>
         </div>
         <div>
-          <button type="button" className="btn btn-default btn-xs" onClick={openDeleteConfirmationModal}>
+          <button
+            type="button"
+            className="btn btn-default btn-xs"
+            onClick={openDeleteConfirmationModal}
+          >
             <span className="glyphicon glyphicon-remove" aria-hidden="true" />
           </button>
         </div>

@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-const Modal = ({ open, onClose, onAccept, children, title, saveText }) => {
+const Modal = ({
+  className,
+  open,
+  onClose,
+  onAccept,
+  children,
+  title,
+  saveText,
+}) => {
   const [isOpen, setIsOpen] = useState(open);
 
   useEffect(() => {
@@ -26,25 +34,43 @@ const Modal = ({ open, onClose, onAccept, children, title, saveText }) => {
     <>
       <div
         id="exampleModalLive"
-        className={`modal ${isOpen ? 'show' : 'fade'}`}
+        className={`modal ${className || ''} ${isOpen ? 'show' : 'fade'}`}
         tabIndex="-1"
         role="dialog"
-        aria-labelledby="exampleModalLiveLabel"
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLiveLabel">{title}</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeModal}>
-                <span aria-hidden="true">×</span>
-              </button>
+              <h5 className="modal-title">
+                {title}
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  onClick={closeModal}
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </h5>
             </div>
-            <div className="modal-body">
-              {children}
-            </div>
+            <div className="modal-body">{children}</div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>Close</button>
-              <button type="button" className="btn btn-primary" onClick={accept}>{saveText || 'Save'}</button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-dismiss="modal"
+                onClick={closeModal}
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={accept}
+              >
+                {saveText || 'Save'}
+              </button>
             </div>
           </div>
         </div>
