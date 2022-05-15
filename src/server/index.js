@@ -53,7 +53,7 @@ app.delete('/restaurant/:objectID', (req, res) => {
     });
 });
 
-const port = process.env.PORT || 3003;
+const port = process.env.PORT || 3000;
 
 app.listen(port, error => {
   if (error) {
@@ -61,7 +61,7 @@ app.listen(port, error => {
   } else {
     // eslint-disable-next-line no-console
     console.info(
-      '==> Listening on port %s. Open up https://localhost:%s/ in your browser.',
+      '==> Listening on port %s. Open up http://localhost:%s/ in your browser.',
       port,
       port
     );

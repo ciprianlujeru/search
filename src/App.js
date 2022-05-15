@@ -14,7 +14,7 @@ export default function App() {
 
   return (
     <>
-      <InstantSearch searchClient={searchClient} indexName="dev_restaurants">
+      <InstantSearch searchClient={searchClient} refresh indexName="dev_restaurants">
         <Configure hitsPerPage={10} facets={['*']} maxValuesPerFacet={20} />
         <Header />
         <section>

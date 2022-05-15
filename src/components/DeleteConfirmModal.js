@@ -4,16 +4,19 @@ import Modal from './Modal';
 
 const DeleteConfirmModal = () => {
   const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState(null);
   const { state, dispatch } = useContext(AppContext);
   const { deleteModalData: { hit, hit: { objectID, name } = {} } = {} } = state;
   const isOpen = Boolean(hit);
 
   const closeModal = useCallback(() => {
+    setError(null);
     setIsPending(false);
     dispatch({ type: 'CLOSE_DELETE_MODAL' });
   }, [setIsPending]);
 
   const acceptModal = useCallback(() => {
+    setError(null);
     if (!isPending) {
       setIsPending(true);
     }
@@ -24,14 +27,13 @@ const DeleteConfirmModal = () => {
     })
       .then(response => {
         if (response.ok) {
-          console.log('====response', response);
           closeModal();
         } else {
           throw response;
         }
       })
-      .catch(e => {
-        console.log('====e', e);
+      .catch(err => {
+        setError(err);
       })
       .finally(() => {
         setIsPending(false);
@@ -47,6 +49,9 @@ const DeleteConfirmModal = () => {
       onAccept={acceptModal}
     >
       <p>Are you sure yu want to delete this restaurant?</p>
+      <div className="form-error">
+        {error && 'A problem has occurred, please try again later.'}
+      </div>
     </Modal>
   );
 };

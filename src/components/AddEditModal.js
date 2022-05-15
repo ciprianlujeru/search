@@ -9,11 +9,22 @@ import { AppContext } from '../context';
 import Modal from './Modal';
 
 const fields = [
+  { name: 'name', type: 'text', label: 'Name' },
+  {
+    name: 'dining_style',
+    type: 'select',
+    options: ['Casual Dining', 'Casual Elegant', 'Fine Dining', 'Home Style'],
+    label: 'Dining Style',
+  },
+  { name: 'food_type', type: 'text', label: 'Food Type' },
+  { name: 'phone_number', type: 'phone', label: 'Phone Number' },
   { name: 'address', type: 'text', label: 'Address' },
   { name: 'area', type: 'text', label: 'Area' },
   { name: 'city', type: 'text', label: 'City' },
   { name: 'state', type: 'text', label: 'State' },
   { name: 'country', type: 'text', label: 'Country' },
+  { name: 'postal_code', type: 'text', label: 'Postal Code' },
+  { name: 'neighborhood', type: 'text', label: 'Neighborhood' },
   {
     name: '_geoloc',
     type: 'range',
@@ -22,23 +33,13 @@ const fields = [
       { name: 'lng', type: 'number', label: 'Longitude' },
     ],
   },
-  {
-    name: 'dining_style',
-    type: 'select',
-    options: ['Casual Dining', 'Casual Elegant', 'Fine Dining', 'Home Style'],
-    label: 'Dining Style',
-  },
-  { name: 'food_type', type: 'text', label: 'Food Type' },
-  { name: 'image_url', type: 'text', label: 'Image URL' },
-  { name: 'mobile_reserve_url', type: 'text', label: 'Mobile Reserve URL' },
-  { name: 'name', type: 'text', label: 'Name' },
-  { name: 'neighborhood', type: 'text', label: 'Neighborhood' },
-  { name: 'phone_number', type: 'phone', label: 'Phone Number' },
-  { name: 'postal_code', type: 'text', label: 'Postal Code' },
   { name: 'price', type: 'number', label: 'Price' },
-  { name: 'price_range', type: 'text', label: 'Price Range ($x and $x)' },
-  { name: 'reserve_url', type: 'text', label: 'Reserve URL' },
+  { name: 'stars_count', type: 'number', label: 'Stars' },
   { name: 'reviews_count', type: 'number', label: 'Review Count' },
+  { name: 'price_range', type: 'text', label: 'Price Range ($x and $x)' },
+  { name: 'image_url', type: 'text', label: 'Image URL' },
+  { name: 'reserve_url', type: 'text', label: 'Reserve URL' },
+  { name: 'mobile_reserve_url', type: 'text', label: 'Mobile Reserve URL' },
   {
     name: 'payment_options',
     type: 'select',
@@ -46,12 +47,12 @@ const fields = [
     options: ['Cash', 'AMEX', 'Discover', 'MasterCard', 'Visa'],
     label: 'Payment Options',
   },
-  { name: 'stars_count', type: 'number', label: 'Stars' },
 ];
 
 const AddEditModal = () => {
   const formRef = createRef();
   const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState(null);
   const { state, dispatch } = useContext(AppContext);
   const {
     addEditModalData,
@@ -61,11 +62,13 @@ const AddEditModal = () => {
   const title = objectID ? name : 'Add restaurant';
 
   const closeModal = useCallback(() => {
+    setError(null);
     setIsPending(false);
     dispatch({ type: 'CLOSE_ADD_EDIT_MODAL' });
   }, [setIsPending]);
 
   const acceptModal = useCallback(() => {
+    setError(null);
     const isValid = formRef.current.reportValidity();
     if (isValid) {
       formRef.current.dispatchEvent(new Event('submit'));
@@ -93,7 +96,6 @@ const AddEditModal = () => {
 
         values.phone = values.phone_number.replace(/[^0-9+]/g, '');
         values.rounded_stars_count = Math.round(values.stars_count);
-        console.log('====elements', values);
 
         let url = `${window.location.origin}/restaurant`;
         let method = '';
@@ -111,14 +113,13 @@ const AddEditModal = () => {
         })
           .then(response => {
             if (response.ok) {
-              console.log('====response', response);
               closeModal();
             } else {
               throw response;
             }
           })
-          .catch(e => {
-            console.log('====e', e);
+          .catch(err => {
+            setError(err);
           })
           .finally(() => {
             setIsPending(false);
@@ -215,6 +216,9 @@ const AddEditModal = () => {
           <div className="row">{fields.map(renderFields)}</div>
         </div>
       </form>
+      <div className="form-error">
+        {error && 'A problem has occurred, please try again later.'}
+      </div>
     </Modal>
   );
 };

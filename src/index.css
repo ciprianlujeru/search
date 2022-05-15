@@ -487,3 +487,8 @@ select:required:valid {
   margin: 10px 0;
 }
 
+.form-error {
+  text-align: center;
+  color: red;
+  height: 20px;
+}
