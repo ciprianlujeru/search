@@ -6,9 +6,7 @@ import Facets from './components/Facets';
 import Results from './components/Results';
 import AddEditModal from './components/AddEditModal';
 import DeleteConfirmModal from './components/DeleteConfirmModal';
-import './App.css';
 
-// add sort by?
 export default function App() {
   const {
     state: { searchClient },

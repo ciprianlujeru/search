@@ -18,39 +18,39 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 app.post('/restaurant', (req, res) => {
-  res.status(500);
-  res.send('Not Implemented');
+  index
+    .saveObject(req.body, { autoGenerateObjectIDIfNotExist: true })
+    .then(response => {
+      res.send(response);
+    })
+    .catch(e => {
+      res.status(400);
+      res.send(e);
+    });
 });
 
 app.put('/restaurant/:objectID', (req, res) => {
-  console.log('====req', req.params);
-  index.search('grill')
-    .then(({ hits }) => {
-      console.log(hits);
+  index
+    .partialUpdateObject(req.body)
+    .then(response => {
+      res.send(response);
     })
-    .catch((e) => {
-      console.log('====e', e);
-      res.status(500);
+    .catch(e => {
+      res.status(400);
       res.send(e);
     });
-  // res.status(500);
-  // res.send('Not Implemented');
-  // // index.saveObject(req.body)
-  // //   .then((response) => {
-  // //     console.log(response);
-  // //     res.send(response);
-  // //   })
-  // //   .catch((e) => {
-  // //     console.log('====e', e);
-  // //     res.status(500);
-  // //     res.send(e);
-  // //   });
 });
 
 app.delete('/restaurant/:objectID', (req, res) => {
-  console.log('====req', req.params);
-  res.status(500);
-  res.send('Not Implemented');
+  index
+    .deleteObject(req.params.objectID)
+    .then(response => {
+      res.send(response);
+    })
+    .catch(e => {
+      res.status(400);
+      res.send(e);
+    });
 });
 
 const port = process.env.PORT || 3003;
