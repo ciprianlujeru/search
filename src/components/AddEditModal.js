@@ -135,6 +135,7 @@ const AddEditModal = () => {
               <label htmlFor={id}>{label}</label>
               <input
                 type={type}
+                autoComplete="off"
                 className="form-control"
                 id={id}
                 name={name}
@@ -174,7 +175,7 @@ const AddEditModal = () => {
           return (
             <div className="row no-gutter">
               {fields.map(field => (
-                <div className="col-xs-6" key={field.name}>
+                <div className="col-xs-6" key={`${field.name}${objectID}`}>
                   {renderField(field, values[name])}
                 </div>
               ))}
@@ -190,7 +191,7 @@ const AddEditModal = () => {
 
   const renderFields = useCallback(
     field => (
-      <div className="col-sm-6 col-md-4" key={field.name}>
+      <div className="col-sm-6 col-md-4" key={`${field.name}${objectID}`}>
         <div className="form-group">{renderField(field)}</div>
       </div>
     ),
