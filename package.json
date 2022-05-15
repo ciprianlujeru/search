@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run build && npm run start-server",
+    "start-local": "react-scripts start",
     "start-server": "cross-env NODE_ENV=production forever -o out.log -e err.log ./src/server/index.js",
     "stop-server": "forever stop ./src/server/index.js",
     "build": "cross-env NODE_ENV=production react-scripts build",
-    "build-and-start": "npm run build && npm run start-server",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix"
   },

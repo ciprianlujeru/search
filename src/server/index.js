@@ -12,6 +12,8 @@ const corsOptions = {
   methods: 'GET,PUT,POST,DELETE,OPTIONS',
 };
 
+app.use(express.static('build'));
+
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
