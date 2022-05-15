@@ -18,7 +18,7 @@ const DeleteConfirmModal = () => {
       setIsPending(true);
     }
 
-    fetch(`http://localhost:3003/restaurant/${objectID}`, {
+    fetch(`${window.location.origin}/restaurant/${objectID}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     })

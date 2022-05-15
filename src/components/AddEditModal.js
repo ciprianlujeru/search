@@ -95,7 +95,7 @@ const AddEditModal = () => {
         values.rounded_stars_count = Math.round(values.stars_count);
         console.log('====elements', values);
 
-        let url = 'http://localhost:3003/restaurant';
+        let url = `${window.location.origin}/restaurant`;
         let method = '';
         if (objectID) {
           url += `/${objectID}`;
