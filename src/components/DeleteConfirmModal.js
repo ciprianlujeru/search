@@ -48,6 +48,7 @@ const DeleteConfirmModal = () => {
       saveText="Delete"
       onClose={closeModal}
       onAccept={acceptModal}
+      isPending={isPending}
     >
       <p>Are you sure yu want to delete this restaurant?</p>
       <div className="form-error">

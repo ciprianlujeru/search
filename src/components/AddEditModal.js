@@ -211,6 +211,7 @@ const AddEditModal = () => {
       title={title}
       onClose={closeModal}
       onAccept={acceptModal}
+      isPending={isPending}
     >
       <form ref={formRef} onSubmit={onSubmit}>
         <div className="container-fluid">

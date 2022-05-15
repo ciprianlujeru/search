@@ -8,6 +8,7 @@ const Modal = ({
   children,
   title,
   saveText,
+  isPending,
 }) => {
   const [isOpen, setIsOpen] = useState(open);
 
@@ -68,8 +69,18 @@ const Modal = ({
                 type="button"
                 className="btn btn-primary"
                 onClick={accept}
+                disabled={isPending}
               >
                 {saveText || 'Save'}
+                {isPending && (
+                  <>
+                    {' '}
+                    <span
+                      className="glyphicon spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    />
+                  </>
+                )}
               </button>
             </div>
           </div>
