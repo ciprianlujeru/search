@@ -34,7 +34,7 @@ const fields = [
     ],
   },
   { name: 'price', type: 'number', label: 'Price' },
-  { name: 'stars_count', type: 'number', label: 'Stars' },
+  { name: 'stars_count', type: 'number', label: 'Stars', step: '0.1' },
   { name: 'reviews_count', type: 'number', label: 'Review Count' },
   { name: 'price_range', type: 'text', label: 'Price Range ($x and $x)' },
   { name: 'image_url', type: 'text', label: 'Image URL' },
@@ -122,7 +122,10 @@ const AddEditModal = () => {
   );
 
   const renderField = useMemo(
-    () => ({ label, name, type, options, multiple, fields }, values = hit) => {
+    () => (
+      { label, name, type, options, multiple, fields, step },
+      values = hit
+    ) => {
       const id = `field_${name}`;
       switch (type) {
         case 'number':
@@ -138,6 +141,7 @@ const AddEditModal = () => {
                 id={id}
                 name={name}
                 defaultValue={values[name]}
+                step={step}
                 required
               />
             </>
