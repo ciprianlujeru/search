@@ -20,6 +20,7 @@ app.use(bodyParser.json());
 app.post('/restaurant', (req, res) => {
   index
     .saveObject(req.body, { autoGenerateObjectIDIfNotExist: true })
+    .wait()
     .then(response => {
       res.send(response);
     })
@@ -32,6 +33,7 @@ app.post('/restaurant', (req, res) => {
 app.put('/restaurant/:objectID', (req, res) => {
   index
     .partialUpdateObject(req.body)
+    .wait()
     .then(response => {
       res.send(response);
     })
@@ -44,6 +46,7 @@ app.put('/restaurant/:objectID', (req, res) => {
 app.delete('/restaurant/:objectID', (req, res) => {
   index
     .deleteObject(req.params.objectID)
+    .wait()
     .then(response => {
       res.send(response);
     })
