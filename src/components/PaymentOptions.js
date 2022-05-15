@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-const PaymentOption = ({ name }) => <span className="badge">{name}</span>;
+const PaymentOptions = ({ paymentOptions }) => {
+  const renderOption = useCallback(
+    (name, idx) => (
+      <span className="badge" key={idx}>
+        {name}
+      </span>
+    ),
+    []
+  );
 
-const PaymentOptions = ({ paymentOptions }) => (
-  <p className="payment-option">
-    {paymentOptions.map((paymentOption, idx) => (
-      <PaymentOption name={paymentOption} key={idx} />
-    ))}
-  </p>
-);
+  return <p className="payment-option">{paymentOptions.map(renderOption)}</p>;
+};
 
 export default PaymentOptions;

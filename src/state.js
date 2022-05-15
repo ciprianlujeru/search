@@ -9,23 +9,24 @@ const searchClient = algoliasearch(
 
 const initialState = {
   searchClient,
-  editModalData: undefined,
+  addEditModalData: undefined,
   deleteModalData: undefined,
+  filtersOpen: false,
 };
 
 function AppReducer(state, action) {
   const { payload, type } = action;
 
   switch (type) {
-    case 'OPEN_EDIT_MODAL':
+    case 'OPEN_ADD_EDIT_MODAL':
       return {
         ...state,
-        editModalData: payload,
+        addEditModalData: payload,
       };
-    case 'CLOSE_EDIT_MODAL':
+    case 'CLOSE_ADD_EDIT_MODAL':
       return {
         ...state,
-        editModalData: undefined,
+        addEditModalData: undefined,
       };
     case 'OPEN_DELETE_MODAL':
       return {
@@ -36,6 +37,11 @@ function AppReducer(state, action) {
       return {
         ...state,
         deleteModalData: undefined,
+      };
+    case 'TOGGLE_FILTERS':
+      return {
+        ...state,
+        filtersOpen: !state.filtersOpen,
       };
     default:
       return state;

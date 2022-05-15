@@ -1,21 +1,24 @@
-import React from 'react';
-
-const Star = ({ active }) => (
-  <span className={`star${active ? '' : '__empty'}`} />
-);
+import React, { useState, useEffect, useCallback } from 'react';
 
 const Stars = ({ rating }) => {
-  const stars = [];
-  for (let i = 1; i <= 5; ++i) {
-    stars.push(i <= rating);
-  }
-  return (
-    <span className="stars">
-      {stars.map((active, idx) => (
-        <Star key={idx} active={active} />
-      ))}
-    </span>
+  const [fullStars, setFullStars] = useState([]);
+
+  useEffect(() => {
+    const stars = [];
+    for (let i = 1; i <= 5; ++i) {
+      stars.push(i <= rating);
+    }
+    setFullStars(stars);
+  }, [rating, setFullStars]);
+
+  const renderStar = useCallback(
+    (active, idx) => (
+      <span key={idx} className={`star${active ? '' : '__empty'}`} />
+    ),
+    []
   );
+
+  return <span className="stars">{fullStars.map(renderStar)}</span>;
 };
 
 export default Stars;

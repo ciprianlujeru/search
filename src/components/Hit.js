@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import { Highlight } from 'react-instantsearch-dom';
 import Stars from './Stars';
 import PaymentOptions from './PaymentOptions';
@@ -13,12 +13,12 @@ const Hit = hit => {
   } = hit.hit;
   const { dispatch } = useContext(AppContext);
 
-  const openEditModal = () => {
-    dispatch({ type: 'OPEN_EDIT_MODAL', payload: hit });
-  };
-  const openDeleteConfirmationModal = () => {
+  const openEditModal = useCallback(() => {
+    dispatch({ type: 'OPEN_ADD_EDIT_MODAL', payload: hit });
+  }, [hit]);
+  const openDeleteConfirmationModal = useCallback(() => {
     dispatch({ type: 'OPEN_DELETE_MODAL', payload: hit });
-  };
+  }, [hit]);
 
   return (
     <div className={`hit media`}>
@@ -41,19 +41,19 @@ const Hit = hit => {
           <button
             type="button"
             className="btn btn-default btn-xs"
-            data-toggle="modal"
-            onClick={openEditModal}
+            onClick={openDeleteConfirmationModal}
+            title="Delete restaurant"
           >
-            <span className="glyphicon glyphicon-pencil" aria-hidden="true" />
+            <span className="glyphicon glyphicon-remove" aria-hidden="true" />
           </button>
-        </div>
-        <div>
           <button
             type="button"
             className="btn btn-default btn-xs"
-            onClick={openDeleteConfirmationModal}
+            data-toggle="modal"
+            onClick={openEditModal}
+            title="Edit restaurant"
           >
-            <span className="glyphicon glyphicon-remove" aria-hidden="true" />
+            <span className="glyphicon glyphicon-pencil" aria-hidden="true" />
           </button>
         </div>
       </div>

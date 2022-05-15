@@ -1,4 +1,10 @@
-import React, { useContext, createRef } from 'react';
+import React, {
+  useState,
+  useContext,
+  createRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import { AppContext } from '../context';
 import Modal from './Modal';
 
@@ -45,114 +51,156 @@ const fields = [
 
 const AddEditModal = () => {
   const formRef = createRef();
+  const [isPending, setIsPending] = useState(false);
   const { state, dispatch } = useContext(AppContext);
   const {
-    editModalData,
-    editModalData: { hit = {}, hit: { objectID, name } = {} } = {},
+    addEditModalData,
+    addEditModalData: { hit = {}, hit: { objectID, name } = {} } = {},
   } = state;
-  const isOpen = Boolean(editModalData);
+  const isOpen = Boolean(addEditModalData);
   const title = objectID ? name : 'Add restaurant';
 
-  const closeModal = () => {
-    dispatch({ type: 'CLOSE_EDIT_MODAL' });
-  };
+  const closeModal = useCallback(() => {
+    setIsPending(false);
+    dispatch({ type: 'CLOSE_ADD_EDIT_MODAL' });
+  }, [setIsPending]);
 
-  const acceptModal = () => {
+  const acceptModal = useCallback(() => {
     const isValid = formRef.current.reportValidity();
     if (isValid) {
       formRef.current.dispatchEvent(new Event('submit'));
     }
-  };
-  const onSubmit = e => {
-    e.preventDefault();
-    const elements = [...e.target.elements];
-    const values = { objectID: hit.objectID };
-    elements.forEach(({ name, value, multiple, options }) => {
-      if (multiple) {
-        values[name] = [...options]
-          .filter(option => option.selected)
-          .map(option => option.value);
-      } else {
-        values[name] = value;
-      }
-    });
-    values.phone = values.phone_number.replace(/[^0-9+]/g, '');
-    values.rounded_stars_count = Math.round(values.stars_count);
-    console.log('====elements', values);
+  }, [formRef]);
 
-    fetch('http://localhost:3003/update', { method: 'PUT', body: JSON.stringify(values), headers: { 'Content-Type': 'application/json' } })
-      .then((response) => {
-        console.log('====response', response);
-      })
-      .catch((e) => {
-        console.log('====e', e);
-      });
-  };
+  const onSubmit = useCallback(
+    e => {
+      e.preventDefault();
 
-  const renderField = (
-    { label, name, type, options, multiple, fields },
-    values = hit
-  ) => {
-    const id = `field_${name}`;
-    switch (type) {
-      case 'number':
-      case 'phone':
-      case 'text': {
-        return (
-          <>
-            <label htmlFor={id}>{label}</label>
-            <input
-              type={type}
-              className="form-control"
-              id={id}
-              name={name}
-              defaultValue={values[name]}
-              required
-            />
-          </>
-        );
+      if (!isPending) {
+        setIsPending(true);
+        const elements = [...e.target.elements];
+        const values = { objectID: hit.objectID };
+
+        elements.forEach(({ name, value, multiple, options }) => {
+          if (multiple) {
+            values[name] = [...options]
+              .filter(option => option.selected)
+              .map(option => option.value);
+          } else {
+            values[name] = value;
+          }
+        });
+
+        values.phone = values.phone_number.replace(/[^0-9+]/g, '');
+        values.rounded_stars_count = Math.round(values.stars_count);
+        console.log('====elements', values);
+
+        let url = 'http://localhost:3003/restaurant';
+        let method = '';
+        if (objectID) {
+          url += `/${objectID}`;
+          method = 'PUT';
+        } else {
+          method = 'POST';
+        }
+
+        fetch(url, {
+          method,
+          body: JSON.stringify(values),
+          headers: { 'Content-Type': 'application/json' },
+        })
+          .then(response => {
+            if (response.ok) {
+              console.log('====response', response);
+              closeModal();
+            } else {
+              throw response;
+            }
+          })
+          .catch(e => {
+            console.log('====e', e);
+          })
+          .finally(() => {
+            setIsPending(false);
+          });
       }
-      case 'select': {
-        return (
-          <>
-            <label htmlFor={id}>{label}</label>
-            <select
-              className="form-control"
-              id={id}
-              name={name}
-              multiple={multiple}
-              required
-            >
-              {options.map(option => {
-                let selected = values[name] === option;
-                if (Array.isArray(values[name])) {
-                  selected = values[name].indexOf(option) !== -1;
-                }
-                return (
-                  <option value={option} key={option} selected={selected}>
-                    {option}
-                  </option>
-                );
-              })}
-            </select>
-          </>
-        );
+    },
+    [isPending, hit]
+  );
+
+  const renderField = useMemo(
+    () => ({ label, name, type, options, multiple, fields }, values = hit) => {
+      const id = `field_${name}`;
+      switch (type) {
+        case 'number':
+        case 'phone':
+        case 'text': {
+          return (
+            <>
+              <label htmlFor={id}>{label}</label>
+              <input
+                type={type}
+                className="form-control"
+                id={id}
+                name={name}
+                defaultValue={values[name]}
+                required
+              />
+            </>
+          );
+        }
+        case 'select': {
+          return (
+            <>
+              <label htmlFor={id}>{label}</label>
+              <select
+                className="form-control"
+                id={id}
+                name={name}
+                multiple={multiple}
+                required
+              >
+                {options.map(option => {
+                  let selected = values[name] === option;
+                  if (Array.isArray(values[name])) {
+                    selected = values[name].indexOf(option) !== -1;
+                  }
+                  return (
+                    <option value={option} key={option} selected={selected}>
+                      {option}
+                    </option>
+                  );
+                })}
+              </select>
+            </>
+          );
+        }
+        case 'range': {
+          return (
+            <div className="row no-gutter">
+              {fields.map(field => (
+                <div className="col-xs-6" key={field.name}>
+                  {renderField(field, values[name])}
+                </div>
+              ))}
+            </div>
+          );
+        }
+        default:
+          return null;
       }
-      case 'range': {
-        return (
-          <div className="row no-gutter">
-            {fields.map(field => (
-              <div className="col-xs-6" key={field.name}>
-                {renderField(field, values[name])}
-              </div>
-            ))}
-          </div>
-        );
-      }
-      default:
-        return null;
-    }
-  };
+    },
+    [hit]
+  );
+
+  const renderFields = useCallback(
+    field => (
+      <div className="col-sm-6 col-md-4" key={field.name}>
+        <div className="form-group">{renderField(field)}</div>
+      </div>
+    ),
+    [renderField]
+  );
 
   return (
     <Modal
@@ -164,13 +212,7 @@ const AddEditModal = () => {
     >
       <form ref={formRef} onSubmit={onSubmit}>
         <div className="container-fluid">
-          <div className="row">
-            {fields.map(field => (
-              <div className="col-sm-6 col-md-4" key={field.name}>
-                <div className="form-group">{renderField(field)}</div>
-              </div>
-            ))}
-          </div>
+          <div className="row">{fields.map(renderFields)}</div>
         </div>
       </form>
     </Modal>

@@ -24,6 +24,26 @@ article hr {
 .is-logo {
   float: left;
   margin-left: 18px;
+  width: 44px;
+}
+
+.is-logo img {
+  display: block;
+  width: 100%;
+}
+
+.is-logo img:first-child {
+  display: none;
+  width: 195px;
+}
+
+@media (min-width: 768px) {
+  .is-logo img {
+    display: none;
+  }
+  .is-logo img:first-child {
+    display: block;
+  }
 }
 
 .logo {
@@ -44,6 +64,7 @@ article hr {
 
 header {
   background: #ffffff;
+  height: 68px;
   padding: 10px;
   border-bottom: 1px solid #e8e8e8;
   position: relative;
@@ -53,8 +74,7 @@ header {
 }
 
 .searchbox-container {
-  margin-left: 240px;
-  max-width: 400px;
+  margin-left: 84px;
 }
 
 .searchbox-container .input-group {
@@ -73,6 +93,13 @@ header {
   border-radius: 0;
 }
 
+@media (min-width: 768px) {
+  .searchbox-container {
+    margin-left: 240px;
+    max-width: 400px;
+  }
+}
+
 section {
   background: #f1f1f1;
   min-height: 100%;
@@ -80,6 +107,7 @@ section {
 }
 
 section aside {
+  display: none;
   position: absolute;
   top: 67px;
   left: 0;
@@ -87,7 +115,29 @@ section aside {
   width: 230px;
   background: #ffffff;
   border-right: 1px solid #e8e8e8;
+  z-index: 2;
 }
+
+section aside .close {
+  display: block;
+  margin: 10px 0;
+}
+
+.aside-backdrop.modal-backdrop {
+  display: none;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  section aside {
+    display: block;
+  }
+
+  section aside .close {
+    display: none;
+  }
+}
+
 
 .nav {
   margin: 0 20px;
@@ -149,14 +199,17 @@ section aside .badge {
 }
 
 section article {
-  margin-top: 7px;
-  margin-bottom: 10px;
-  margin-left: 237px;
-  margin-right: 10px;
+  margin: 7px 10px 10px 0;
   padding: 10px 0;
   max-width: 100%;
   background: #ffffff;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+  section article {
+    margin-left: 237px;
+  }
 }
 
 .ais-Stats-text {
@@ -222,7 +275,7 @@ section article {
 
 .hit {
   margin-bottom: 10px;
-  height: 130px;
+  min-height: 130px;
   border: 1px solid #f3f3f3;
 }
 
@@ -233,12 +286,19 @@ section article {
 }
 
 .hit .media-object {
-  height: 130px;
-  width: 130px;
+  height: 65px;
+  width: 65px;
   overflow: hidden;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
+}
+
+@media (min-width: 768px) {
+  .hit .media-object {
+    height: 130px;
+    width: 130px;
+  }
 }
 
 .hit .media-heading {
@@ -262,7 +322,14 @@ section article {
 }
 
 .stars {
-  margin-left: 5px;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .stars {
+    margin-left: 5px;
+    display: inline-block;
+  }
 }
 
 .star {
@@ -294,8 +361,14 @@ section article {
   margin: 12px 0;
 }
 
-.payment-option .badge + .badge {
+.payment-option .badge {
   margin-left: 4px;
+}
+
+@media (min-width: 768px) {
+  .payment-option .badge:first-child {
+    margin-left: 0;
+  }
 }
 
 .dining-style {
@@ -307,16 +380,25 @@ section article {
 }
 
 .ais-RatingMenu {
-  margin: 0 24px 0 28px;
+  margin: 0 20px;
 }
 
-/*input:invalid {*/
-/*  box-shadow: 0 0 5px 1px red;*/
-/*}*/
+.ais-RatingMenu-item--selected {
+  outline: 1px solid red;
+}
 
-/*input:focus:invalid {*/
-/*  box-shadow: none;*/
-/*}*/
+.ais-RatingMenu-item {
+  padding: 4px 4px 4px 8px
+}
+
+.ais-RatingMenu-item:hover {
+  background: #333333;
+}
+
+.ais-RatingMenu-item:hover * {
+  color: #ffffff;
+  text-decoration: none;
+}
 
 input:required:invalid,
 input:focus:invalid,
@@ -346,6 +428,10 @@ select:required:valid {
   }
 }
 
+.modal-backdrop {
+  opacity: .5;
+}
+
 .row.no-gutter {
   margin-left: 0;
   margin-right: 0;
@@ -354,4 +440,38 @@ select:required:valid {
 .row.no-gutter [class*='col-'] {
   padding-right: 0;
   padding-left: 0;
+}
+
+.no-margin {
+  padding: 0;
+}
+
+.media-right > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90px;
+  margin: 20px 10px 20px 0;
+}
+
+.media-right > div button {
+  opacity: .3;
+}
+
+.media-right > div button:hover {
+  opacity: 1;
+}
+
+.toggle-filters {
+  margin-right: 15px;
+}
+
+@media (min-width: 768px) {
+  .toggle-filters {
+    display: none;
+  }
+}
+
+.ais-ClearRefinements {
+  margin: 10px 0;
 }

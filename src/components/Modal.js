@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const Modal = ({
   className,
@@ -17,18 +17,18 @@ const Modal = ({
     }
   }, [open]);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     if (typeof onClose === 'function') {
       onClose();
     }
     setIsOpen(false);
-  };
+  }, [onClose, setIsOpen]);
 
-  const accept = () => {
+  const accept = useCallback(() => {
     if (typeof onAccept === 'function') {
       onAccept();
     }
-  };
+  }, [onAccept]);
 
   return (
     <>
