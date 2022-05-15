@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 const Modal = ({
-  className,
+  className = '',
   open,
   onClose,
   onAccept,
-  children,
   title,
-  saveText,
+  saveText = 'Save',
+  saveType = 'button',
   isPending,
+  renderContent,
 }) => {
   const [isOpen, setIsOpen] = useState(open);
 
@@ -35,7 +36,7 @@ const Modal = ({
     <>
       <div
         id="exampleModalLive"
-        className={`modal ${className || ''} ${isOpen ? 'show' : 'fade'}`}
+        className={`modal ${className} ${isOpen ? 'show' : 'fade'}`}
         tabIndex="-1"
         role="dialog"
       >
@@ -55,34 +56,36 @@ const Modal = ({
                 </button>
               </h5>
             </div>
-            <div className="modal-body">{children}</div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-dismiss="modal"
-                onClick={closeModal}
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={accept}
-                disabled={isPending}
-              >
-                {saveText || 'Save'}
-                {isPending && (
-                  <>
-                    {' '}
-                    <span
-                      className="glyphicon spinner-border spinner-border-sm"
-                      aria-hidden="true"
-                    />
-                  </>
-                )}
-              </button>
-            </div>
+            {renderContent(
+              'modal-body',
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+                <button
+                  type={saveType}
+                  className="btn btn-primary"
+                  onClick={accept}
+                  disabled={isPending}
+                >
+                  {saveText}
+                  {isPending && (
+                    <>
+                      {' '}
+                      <span
+                        className="glyphicon spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      />
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -67,17 +67,10 @@ const AddEditModal = () => {
     dispatch({ type: 'CLOSE_ADD_EDIT_MODAL' });
   }, [setIsPending]);
 
-  const acceptModal = useCallback(() => {
-    setError(null);
-    const isValid = formRef.current.reportValidity();
-    if (isValid) {
-      formRef.current.dispatchEvent(new Event('submit'));
-    }
-  }, [formRef]);
-
   const onSubmit = useCallback(
     e => {
       e.preventDefault();
+      setError(null);
 
       if (!isPending) {
         setIsPending(true);
@@ -210,18 +203,24 @@ const AddEditModal = () => {
       open={isOpen}
       title={title}
       onClose={closeModal}
-      onAccept={acceptModal}
+      saveType="submit"
       isPending={isPending}
-    >
-      <form ref={formRef} onSubmit={onSubmit}>
-        <div className="container-fluid">
-          <div className="row">{fields.map(renderFields)}</div>
-        </div>
-      </form>
-      <div className="form-error">
-        {error && 'A problem has occurred, please try again later.'}
-      </div>
-    </Modal>
+      renderContent={(bodyClass, extraElements) => (
+        <>
+          <form ref={formRef} onSubmit={onSubmit}>
+            <div className={bodyClass}>
+              <div className="container-fluid">
+                <div className="row">{fields.map(renderFields)}</div>
+              </div>
+              <div className="form-error">
+                {error && 'A problem has occurred, please try again later.'}
+              </div>
+            </div>
+            {extraElements}
+          </form>
+        </>
+      )}
+    />
   );
 };
 

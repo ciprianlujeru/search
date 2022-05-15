@@ -49,12 +49,18 @@ const DeleteConfirmModal = () => {
       onClose={closeModal}
       onAccept={acceptModal}
       isPending={isPending}
-    >
-      <p>Are you sure yu want to delete this restaurant?</p>
-      <div className="form-error">
-        {error && 'A problem has occurred, please try again later.'}
-      </div>
-    </Modal>
+      renderContent={(bodyClass, extraElements) => (
+        <>
+          <div className={bodyClass}>
+            <p>Are you sure yu want to delete this restaurant?</p>
+            <div className="form-error">
+              {error && 'A problem has occurred, please try again later.'}
+            </div>
+          </div>
+          {extraElements}
+        </>
+      )}
+    />
   );
 };
 
