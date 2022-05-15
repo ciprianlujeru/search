@@ -113,6 +113,7 @@ const AddEditModal = () => {
         })
           .then(response => {
             if (response.ok) {
+              dispatch({ type: 'TOGGLE_REFRESH_QUERY' });
               closeModal();
             } else {
               throw response;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { InstantSearch, Configure } from 'react-instantsearch-dom';
 import { AppContext } from './context';
 import Header from './components/Header';
@@ -9,12 +9,23 @@ import DeleteConfirmModal from './components/DeleteConfirmModal';
 
 export default function App() {
   const {
-    state: { searchClient },
+    state: { searchClient, refreshQuery },
+    dispatch,
   } = useContext(AppContext);
+
+  useEffect(() => {
+    if (refreshQuery) {
+      dispatch({ type: 'TOGGLE_REFRESH_QUERY' });
+    }
+  }, [refreshQuery]);
 
   return (
     <>
-      <InstantSearch searchClient={searchClient} indexName="dev_restaurants">
+      <InstantSearch
+        searchClient={searchClient}
+        refresh={refreshQuery}
+        indexName="dev_restaurants"
+      >
         <Configure hitsPerPage={10} facets={['*']} maxValuesPerFacet={20} />
         <Header />
         <section>

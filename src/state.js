@@ -9,6 +9,7 @@ const searchClient = algoliasearch(
 
 const initialState = {
   searchClient,
+  refreshQuery: false,
   addEditModalData: undefined,
   deleteModalData: undefined,
   filtersOpen: false,
@@ -42,6 +43,11 @@ function AppReducer(state, action) {
       return {
         ...state,
         filtersOpen: !state.filtersOpen,
+      };
+    case 'TOGGLE_REFRESH_QUERY':
+      return {
+        ...state,
+        refreshQuery: !state.refreshQuery,
       };
     default:
       return state;
