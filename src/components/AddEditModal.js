@@ -91,12 +91,10 @@ const AddEditModal = () => {
         values.rounded_stars_count = Math.round(values.stars_count);
 
         let url = `${window.location.origin}/restaurant`;
-        let method = '';
+        let method = 'POST';
         if (objectID) {
           url += `/${objectID}`;
           method = 'PUT';
-        } else {
-          method = 'POST';
         }
 
         fetch(url, {
@@ -199,29 +197,31 @@ const AddEditModal = () => {
   );
 
   return (
-    <Modal
-      className="add-edit-modal"
-      open={isOpen}
-      title={title}
-      onClose={closeModal}
-      saveType="submit"
-      isPending={isPending}
-      renderContent={(bodyClass, extraElements) => (
-        <>
-          <form ref={formRef} onSubmit={onSubmit}>
-            <div className={bodyClass}>
-              <div className="container-fluid">
-                <div className="row">{fields.map(renderFields)}</div>
+    isOpen && (
+      <Modal
+        className="add-edit-modal"
+        open={isOpen}
+        title={title}
+        onClose={closeModal}
+        saveType="submit"
+        isPending={isPending}
+        renderContent={(bodyClass, extraElements) => (
+          <>
+            <form ref={formRef} onSubmit={onSubmit}>
+              <div className={bodyClass}>
+                <div className="container-fluid">
+                  <div className="row">{fields.map(renderFields)}</div>
+                </div>
+                <div className="form-error">
+                  {error && 'A problem has occurred, please try again later.'}
+                </div>
               </div>
-              <div className="form-error">
-                {error && 'A problem has occurred, please try again later.'}
-              </div>
-            </div>
-            {extraElements}
-          </form>
-        </>
-      )}
-    />
+              {extraElements}
+            </form>
+          </>
+        )}
+      />
+    )
   );
 };
 

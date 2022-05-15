@@ -21,7 +21,7 @@ const Hit = hit => {
   }, [hit]);
 
   return (
-    <div className={`hit media`}>
+    <div className="hit media">
       <div className="media-left">
         <div
           className="media-object"

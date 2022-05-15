@@ -35,7 +35,6 @@ const Modal = ({
   return (
     <>
       <div
-        id="exampleModalLive"
         className={`modal ${className} ${isOpen ? 'show' : 'fade'}`}
         tabIndex="-1"
         role="dialog"
